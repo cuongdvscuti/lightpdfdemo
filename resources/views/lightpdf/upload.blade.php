@@ -36,25 +36,40 @@
         @csrf
         <div class="mb-3">
             <label for="file" class="form-label">Select File</label>
-            <input class="form-control" type="file" name="file" id="file" required>
+            <input class="form-control" type="file" name="file" id="pdfFile" required>
         </div>
         <button type="submit" class="btn btn-primary">Upload & Process</button>
     </form>
-</div>
 
-<!-- Spinner Overlay -->
-<div class="spinner-overlay" id="spinner">
-    <div class="spinner-border text-light" role="status">
-        <span class="visually-hidden">Processing...</span>
+    <div id="pdf-preview" class="mt-4 d-none">
+        <h4>PDF Preview:</h4>
+        <iframe id="pdf-frame" src="" width="100%" height="1000px" style="border: 1px solid #ccc;"></iframe>
     </div>
-    <p class="text-light mt-3">Processing your file, please wait...</p>
-</div>
 
+</div>
+    <!-- Spinner Overlay -->
+    <div class="spinner-overlay" id="spinner">
+        <div class="spinner-border text-light" role="status">
+            <span class="visually-hidden">Processing...</span>
+        </div>
+        <p class="text-light mt-3">Processing your file, please wait...</p>
+    </div>
 <script>
     document.getElementById('uploadForm').addEventListener('submit', function() {
         document.getElementById('spinner').style.display = 'flex';
     });
-</script>
 
+    document.getElementById('pdfFile').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file && file.type === 'application/pdf') {
+            const fileURL = URL.createObjectURL(file);
+            document.getElementById('pdf-frame').src = fileURL;
+            document.getElementById('pdf-preview').classList.remove('d-none');
+        } else {
+            document.getElementById('pdf-preview').classList.add('d-none');
+        }
+    });
+
+</script>
 </body>
 </html>
